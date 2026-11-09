@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbh.dao.ReturnWarningMapper">
+  <resultMap id="ReturnWarningResult" type="com.hbh.entity.ReturnWarning">
+    <id column="proid" property="proid" />
+    <result column="pname" property="pname" />
+    <result column="sale_quantity" property="saleQuantity" />
+    <result column="return_quantity" property="returnQuantity" />
+    <result column="return_rate" property="returnRate" />
+    <result column="last_return_date" property="lastReturnDate" />
+    <result column="quantity_warning" property="quantityWarning" />
+    <result column="rate_warning" property="rateWarning" />
+  </resultMap>
+
+  <!-- Aggregate each table first so multiple sales and returns cannot multiply totals. -->
+  <sql id="WarningSource">
+    FROM (
+      SELECT proid, MAX(pname) AS pname, SUM(num) AS return_quantity,
+             MAX(retdate) AS last_return_date
+      FROM cusretire
+      WHERE retdate BETWEEN #{startDate} AND #{endDate} AND num &gt; 0
+      GROUP BY proid
+    ) r
+    LEFT JOIN (
+      SELECT proid, SUM(num) AS sale_quantity
+      FROM sale
+      WHERE saledate BETWEEN #{startDate} AND #{endDate} AND num &gt; 0
+      GROUP BY proid
+    ) s ON s.proid = r.proid
+  </sql>
+
+  <sql id="WarningCondition">
+    WHERE r.return_quantity &gt;= #{quantityThreshold}
+       OR (COALESCE(s.sale_quantity, 0) &gt; 0
+           AND r.return_quantity * 100 &gt;= s.sale_quantity * #{rateThreshold})
+  </sql>
+
+  <select id="selectWarnings" resultMap="ReturnWarningResult">
+    SELECT r.proid, COALESCE(p.pname, r.pname) AS pname,
+           COALESCE(s.sale_quantity, 0) AS sale_quantity, r.return_quantity,
+           ROUND(r.return_quantity * 100.0 / NULLIF(s.sale_quantity, 0), 2) AS return_rate,
+           r.last_return_date,
+           (r.return_quantity &gt;= #{quantityThreshold}) AS quantity_warning,
+           (COALESCE(s.sale_quantity, 0) &gt; 0
+            AND r.return_quantity * 100 &gt;= s.sale_quantity * #{rateThreshold}) AS rate_warning
+    <include refid="WarningSource" />
+    LEFT JOIN product p ON p.proid = r.proid
+    <include refid="WarningCondition" />
+    ORDER BY (quantity_warning + rate_warning) DESC, r.return_quantity DESC, r.proid ASC
+  </select>
+
+  <select id="countWarnings" resultType="long">
+    SELECT COUNT(*)
+    <include refid="WarningSource" />
+    <include refid="WarningCondition" />
+  </select>
+</mapper>

@@ -69,6 +69,7 @@ function get(id) {
                       <li><a href="${pageContext.request.contextPath }/manager/flatform/sale/getall">销售信息</a></li>
                       <li><a href="${pageContext.request.contextPath}/manager/flatform/sale/toechart">销售统计</a></li>
                       <li><a href="${pageContext.request.contextPath }/manager/flatform/cusretire/getall">顾客退货办理</a></li>
+                      <li><a href="${pageContext.request.contextPath }/manager/flatform/return-warning">退货预警</a></li>
                       
                     </ul>
                   </li>

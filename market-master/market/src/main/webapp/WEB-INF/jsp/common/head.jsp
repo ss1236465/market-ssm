@@ -68,6 +68,7 @@ function get(id) {
                     <ul class="nav child_menu">
                       <li><a href="${pageContext.request.contextPath }/staff/flatform/sale/getall">销售信息</a></li>
                       <li><a href="${pageContext.request.contextPath }/staff/flatform/cusretire/getall">顾客退货办理</a></li>
+                      <li><a href="${pageContext.request.contextPath }/staff/flatform/return-warning">退货预警</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-bar-chart-o"></i> 客户信息管理 <span class="fa fa-chevron-down"></span></a>

@@ -21,6 +21,7 @@ import com.hbh.entity.Staff;
 import com.hbh.entity.Type;
 import com.hbh.service.imp.StaffServiceImp;
 import com.hbh.tools.Constants;
+import com.hbh.service.ReturnWarningService;
 
 /**
  * @Author Binvor
@@ -33,6 +34,8 @@ public class StaffController {
 	private Logger logger=Logger.getLogger(StaffController.class);
 	@Autowired
 	StaffServiceImp staffServiceImp;
+	@Autowired
+	ReturnWarningService returnWarningService;
 	@RequestMapping("/login")
 	public String login() {
 		logger.debug("LoginController welcome AppInfoSystem develpor==================");
@@ -51,12 +54,14 @@ public class StaffController {
 		}
 	}
 	@RequestMapping(value="/flatform/main")
-	public String main(HttpSession session) {
+	public String main(HttpSession session, HttpServletRequest request) {
 //		验证是否有session信息，防止非法登录，没有就跳转到登录页面
 		if(session.getAttribute(Constants.Staff_SESSION)==null)
 		{
 			return "redirect:/staff/login";
 		}
+		request.setAttribute("returnWarningCount", returnWarningService.getDefaultWarningCount());
+		request.setAttribute("rolePath", "/staff/flatform");
 		return "main";
 	}
 	@RequestMapping(value="/logout")

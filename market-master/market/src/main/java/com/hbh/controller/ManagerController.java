@@ -22,6 +22,7 @@ import com.hbh.service.imp.KcxxServiceImp;
 import com.hbh.service.imp.ManagerServiceImp;
 import com.hbh.service.imp.StaffServiceImp;
 import com.hbh.tools.Constants;
+import com.hbh.service.ReturnWarningService;
 
 /**
  * @Author Binvor
@@ -39,6 +40,8 @@ public class ManagerController {
 	
 	@Autowired
 	KcxxServiceImp kcxxServiceImp;
+	@Autowired
+	ReturnWarningService returnWarningService;
 	@RequestMapping("/login")
 	public String login() {
 		logger.debug("LoginController welcome AppInfoSystem develpor==================");
@@ -70,6 +73,8 @@ public class ManagerController {
 		}else {
 			request.setAttribute("msg", "");
 		}
+		request.setAttribute("returnWarningCount", returnWarningService.getDefaultWarningCount());
+		request.setAttribute("rolePath", "/manager/flatform");
 		return "manager/main";
 	}
 	@RequestMapping(value="/logout")
