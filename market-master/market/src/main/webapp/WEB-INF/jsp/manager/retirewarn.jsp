@@ -40,7 +40,7 @@
 <div class="col-md-12 col-sm-12 col-xs-12 rw-wrap">
 
   <div class="rw-head">
-    <h2><i class="fa fa-exclamation-triangle" style="color:#d9534f"></i> 退货预警 <small id="rwUpdated">正在加载…</small></h2>
+    <h2><i class="fa fa-exclamation-triangle" style="color:#d9534f"></i> 退货的预警 <small id="rwUpdated">正在加载…</small></h2>
     <button type="button" class="btn btn-default btn-sm" id="rwRefresh"><i class="fa fa-refresh"></i> 刷新数据</button>
   </div>
 
@@ -91,7 +91,7 @@
   <!-- 商品预警列表 -->
   <div class="x_panel">
     <div class="x_title">
-      <h2>商品退货预警 <small id="rwProdCount"></small></h2>
+      <h2>商品退货的预警 <small id="rwProdCount"></small></h2>
       <div class="pull-right">
         <label style="font-weight:normal;margin:0"><input type="checkbox" id="rwOnlyWarn"> 只看预警商品</label>
       </div>

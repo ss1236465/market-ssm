@@ -25,7 +25,7 @@ import com.hbh.service.imp.ProductServiceImp;
 import com.hbh.service.imp.SaleServiceImp;
 
 /**
- * 退货预警：按商品汇总顾客退货率、退供应商比例，并找出异常退货单。
+ * 退货的预警：按商品汇总顾客退货率、退供应商比例，并找出异常退货单。
  * 预警等级阈值由前端页面调整，这里只提供原始统计数据。
  */
 @Controller
